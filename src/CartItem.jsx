@@ -2,6 +2,10 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { removeItem, updateQuantity } from './CartSlice';
 import './CartItem.css';
+import {handleContinueShopping} from './ProductList';
+
+// Function to parse cost from a string
+const parseCost = (costString) => parseFloat(costString.replace('$', ''));
 
 const CartItem = ({ onContinueShopping }) => {
   const cart = useSelector(state => state.cart.items);
@@ -10,15 +14,17 @@ const CartItem = ({ onContinueShopping }) => {
   // Calculate total amount for all products in the cart
   const calculateTotalAmount = () => {
     let totalAmount = 0;
-    items.forEach((item) => {
-        totalAmount += item.cost * item.quantity;
+    cart.forEach((item) => {
+      totalAmount += parseCost(item.cost) * item.quantity;
     });
     return totalAmount;
   };
 
   const handleContinueShopping = (e) => {
-    e.preventDefault();
-    onContinueShopping();
+    e.preventDefault(); // Prevent default behavior (if any)
+    if (onContinueShopping) {
+      onContinueShopping(e); // Call the function to continue shopping
+    }
   };
 
   const handleCheckoutShopping = (e) => {
@@ -36,12 +42,12 @@ const CartItem = ({ onContinueShopping }) => {
   };
 
   const handleRemove = (item) => {
-    dispatch(removeItem({name: item.name}));
+    dispatch(removeItem(item.name));
   };
 
   // Calculate total cost based on quantity for an item
   const calculateTotalCost = (item) => {
-    return item.cost * item.quantity;
+    return parseCost(item.cost) * item.quantity;
   };
 
   return (
@@ -69,12 +75,15 @@ const CartItem = ({ onContinueShopping }) => {
       <div className="continue_shopping_btn">
         <button className="get-started-button" onClick={(e) => handleContinueShopping(e)}>Continue Shopping</button>
         <br />
-        <button className="get-started-button1">Checkout</button>
+        <button className="get-started-button1" onClick={(e) => handleCheckoutShopping(e)}>Checkout</button>
       </div>
     </div>
   );
 };
 
 export default CartItem;
+
+
+
 
 

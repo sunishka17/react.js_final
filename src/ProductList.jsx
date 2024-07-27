@@ -243,8 +243,9 @@ function ProductList() {
    }
    const handleCartClick = (e) => {
     e.preventDefault();
-    setShowCart(true); // Set showCart to true when cart icon is clicked
+    setShowCart(true); // Show cart
 };
+
 const handlePlantsClick = (e) => {
     e.preventDefault();
     setShowPlants(true); // Set showAboutUs to true when "About Us" link is clicked
@@ -290,7 +291,7 @@ const handleAddToCart = (product) => {
         <div className="product-grid">
             {plantsArray.map((item, index) => (
                 <div key={index}>
-                    <h1><div classNames='plant_heading'>{item.category}</div></h1>
+                    <h1><div className='plant_heading'>{item.category}</div></h1>
                     <div className="product-list">
                         {item.plants.map((plant, plantIndex) => (
                             <div className='product-card' key={plantIndex}>
